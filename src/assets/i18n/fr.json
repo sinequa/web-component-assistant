@@ -1,0 +1,9 @@
+{
+  "assistant": {
+    "userPrompt": "Bonjour, je m'appelle [[principal.fullName]].",
+    "connectionErrorMessage": "Erreur de connexion ! Veuillez vérifier votre connexion réseau et réessayer.",
+    "genericChatErrorMessage": "Désolé, une erreur s'est produite lors du traitement de votre demande… 🥺",
+    "searchWarningMessage": "Vous devez effectuer une recherche en texte intégral pour récupérer des résultats.",
+    "disclaimer": "Ce contenu est généré par l'IA et peut contenir des erreurs. Veuillez vérifier les citations pour leur exactitude."
+  }
+}

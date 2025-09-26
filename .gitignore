@@ -1,0 +1,60 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/tmp
+/out-tsc
+/bazel-out
+dist/*
+
+# Node
+/node_modules
+vite/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Angular
+.angular/
+dist/
+
+/src/assets/i18n/*
+/src/assets/i18n/chat-message
+/src/assets/i18n/chat-reference
+/src/assets/i18n/chat-settings
+/src/assets/i18n/chat-debug-message
+/src/assets/i18n/chat-documents-upload
+/src/assets/i18n/chat-dialogs
+/src/assets/i18n/saved-chats
+/src/assets/i18n/token-consumption
+!/src/assets/i18n/en.json
+!/src/assets/i18n/fr.json
+!/src/assets/i18n/de.json

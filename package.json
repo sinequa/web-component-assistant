@@ -1,0 +1,60 @@
+{
+  "name": "assistant-element",
+  "version": "3.9.6",
+  "scripts": {
+    "ng": "ng",
+    "start": "npm run build && cd ./vite && npm run vite",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "postbuild": "npm run transloco:extract-scoped-libs && copy node_modules\\@sinequa\\atomic\\dist\\atomic.js dist\\assistant-element\\browser\\atomic.js",
+    "transloco:extract-scoped-libs": "transloco-scoped-libs"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.1.0",
+    "@angular/cdk": "^19.1.1",
+    "@angular/common": "^19.1.0",
+    "@angular/compiler": "^19.1.0",
+    "@angular/core": "^19.1.0",
+    "@angular/elements": "^19.1.3",
+    "@angular/forms": "^19.1.0",
+    "@angular/platform-browser": "^19.1.0",
+    "@angular/platform-browser-dynamic": "^19.1.0",
+    "@angular/router": "^19.1.0",
+    "@flowjs/flow.js": "^2.14.1",
+    "@flowjs/ngx-flow": "^0.6.0",
+    "@jsverse/transloco": "^7.6.1",
+    "@jsverse/transloco-messageformat": "^7.0.1",
+    "@microsoft/signalr": "^7.0.12",
+    "@sinequa/assistant": "^3.9.6",
+    "@sinequa/atomic": "^0.0.113",
+    "chart.js": "^4.4.7",
+    "date-fns": "^4.1.0",
+    "lodash": "^4.17.21",
+    "markdown-it": "^14.1.0",
+    "ngx-remark": "^0.0.9",
+    "prismjs": "^1.29.0",
+    "prismjs-components-importer": "^0.2.0",
+    "remark-gfm": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "rxjs": "~7.8.0",
+    "safecolor": "^1.0.1",
+    "tslib": "^2.3.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "zod": "^3.24.1",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.1.4",
+    "@angular/cli": "^19.1.4",
+    "@angular/compiler-cli": "^19.1.0",
+    "@jsverse/transloco-scoped-libs": "^7.0.1",
+    "@types/flowjs__flow.js": "^2.13.3",
+    "typescript": "~5.7.2"
+  },
+  "overrides": {
+    "vite": "^6.2.0"
+  }
+}
