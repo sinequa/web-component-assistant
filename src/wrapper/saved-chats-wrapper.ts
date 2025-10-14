@@ -12,7 +12,7 @@ import { SavedChatsComponent } from '@sinequa/assistant/chat';
     }
   `,
   standalone: true,
-  imports: [SavedChatsComponent],
+  imports: [SavedChatsComponent]
 })
 export class SavedChatsWrapperComponent {
   instanceId = input<any>();
@@ -20,7 +20,5 @@ export class SavedChatsWrapperComponent {
   isReady = computed(
     () => !!this.instanceId()
   );
-
-  el = inject(ElementRef);
 
 }

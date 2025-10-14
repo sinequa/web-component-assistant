@@ -10,6 +10,11 @@ import { provideTranslocoMessageformat } from '@jsverse/transloco-messageformat'
 import { TranslocoHttpLoader } from './transloco-loader';
 import { ChatWrapperComponent } from './wrapper/chat-wrapper';
 import { SavedChatsWrapperComponent } from './wrapper/saved-chats-wrapper';
+import { ChatSettingsWrapperComponent } from './wrapper/chat-settings-wrapper';
+import { DocumentOverviewWrapperComponent } from './wrapper/document-overview-wrapper';
+import { DocumentUploadWrapperComponent } from './wrapper/document-upload-wrapper';
+import { APP_INITIALIZER } from '@angular/core';
+import { CustomElementsService, initializeCustomElements } from '@sinequa/assistant/chat';
 
 createApplication({
   providers: [
@@ -33,6 +38,12 @@ createApplication({
       loader: TranslocoHttpLoader,
     }),
     provideTranslocoMessageformat(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeCustomElements,
+      multi: true,
+      deps: [CustomElementsService],
+    }
   ],
 })
   .then((app) => {
@@ -45,6 +56,21 @@ createApplication({
       injector: app.injector,
     });
     customElements.define('sq-saved-chats-wrapper', SavedChatsWrapper);
+
+    const ChatSettingsWrapper = createCustomElement(ChatSettingsWrapperComponent, {
+      injector: app.injector,
+    });
+    customElements.define('sq-chat-settings-wrapper', ChatSettingsWrapper);
+
+    const DocumentOverviewWrapper = createCustomElement(DocumentOverviewWrapperComponent, {
+      injector: app.injector,
+    });
+    customElements.define('sq-document-overview-wrapper', DocumentOverviewWrapper);
+
+    const documentUploadWrapper = createCustomElement(DocumentUploadWrapperComponent, {
+      injector: app.injector,
+    });
+    customElements.define('sq-document-upload-wrapper', documentUploadWrapper);
 
   })
   .catch((err) => console.error(err));

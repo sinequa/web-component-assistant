@@ -1,9 +1,18 @@
-# AssistantElement
+# Assistant Web Components
 
 ## Anatomy
 
-- `dist/assistant-element/` contains the built web component files for `sq-chat-wrapper`. Files to be used for web components are `browser/main.js` and `browser/polyfills.js`, copy and paste them in your project static folder.
-- `src/` contains the source code to build the web component and the chat component wrapper.
+- `dist/assistant-element/` contains the built web components files. 
+Files to be used for web components are: 
+
+- `browser/main.js`.
+- `browser/polyfills.js`.
+- `browser/atomic.js`.
+- `browser/styles.css`.
+- `browser/assets` folder (if you need to customize translations, you can find them in `assets/i18n` folder).
+copy and paste them in your project static folder.
+
+- `src/` contains the source code to build the web component and all the components wrapper.
 - `vite/` contains a simple Vite configuration file to test the web component. Vite server will serve files from the `dist/assistant-element/browser` folder.
 
 ## Build the Assistant as a web component
@@ -24,7 +33,7 @@ npm run build
 
 ### Configure the back-end URL
 
-Use the `API_URL` constant from `vite.config.js` as your proxy URL:
+Use the `API_URL` constant from `vite.config.ts` as your proxy URL:
 
 ```typescript
 const API_URL = "https://my-backend-url.com";
@@ -41,6 +50,21 @@ setGlobalConfig({
 ```
 
 You can see more details about the global configuration in the [Atomic documentation](https://sinequa.github.io/sba-mint/mint/how-to/configuration#global-configuration).
+
+### Configure the assistant instance
+The `assistantConfig` constant specifies the configuration used by the Assistant instance.
+You should replace the placeholder values with your own:
+
+```typescript
+const assistantConfig = {
+  instanceId: "<your-instance-name>",          // Replace with the name of your Assistant instance
+  additionalWorkflowProperties: {},            // Optional workflow-specific properties
+  query: { 
+    name: "<your-query-web-service-name>"      // Replace with the name of your Query web service
+  },
+};
+
+```
 
 ### Authentication
 
@@ -65,16 +89,54 @@ You need to call the `login()` function to prompt the authentication process con
 
 You can override the default authentication by passing a username and a password to the `login()`, see more details in the [Atomic documentation](https://sinequa.github.io/sba-mint/atomic/authentication/login).
 
-The `initSinequaAssistant()` function calls a set of function to initialize the component, including fetching of the _csrf token_.
-Once the challenge completed and the token is stored, the `initSinequaAssistant()` function sets up the DOM elements for the chat component.
+The `initSinequaAssistant()` function calls a set of functions to initialize components, including fetching of the _csrf token_.
+Once the challenge is completed and the token is stored, the `initSinequaAssistant()` function sets up the DOM elements for all components.
 
 ## Build your page with the assistant as a web component
 
-You can see an example of how to structure your page with the assistant as a web component in the last `.then()` block from `src/index.html`.
+You can see an example of how to structure your page with the assistant as a web component in the `src/index.html` file. The initialization process is handled by the `initSinequaAssistant` and `initDocumentsUpload` functions, which set up all the necessary components.
 
-- A parent element `<div>` to contain the chat component.
-- `sq-chat-wrapper` for the chat component.
-- `sq-saved-chats-wrapper` for the saved chats component.
+The following components are available:
+
+- `sq-chat-wrapper`: The main chat component.
+- `sq-chat-settings-wrapper`: The settings component for the chat.
+- `sq-saved-chats-wrapper`: The component for displaying saved chats.
+- `sq-document-overview-wrapper`: The component for displaying an overview of uploaded documents.
+- `sq-document-upload-wrapper`: The component for uploading documents.
+
+## How-to tricks
+
+This section provides tips and tricks for customizing the assistant web component to fit your needs.
+
+### Customizing the look and feel
+
+The global styling for the web component is defined in the `src/styles.css` file. You can modify this file to change the appearance of the components. For example, you can change the colors, fonts, and layout to match your application's design.
+
+### Customizing the behavior
+
+The `sq-chat-wrapper` component dispatches events when the user clicks on the "open preview" or "open document" icons. You can listen for these events to implement custom behavior, such as displaying a modal window or navigating to a different page.
+
+Here is an example of how to add event listeners to the `sq-chat-wrapper` component:
+
+```html
+<script>
+    // Chat Wrapper
+    var chatElement = document.createElement("sq-chat-wrapper");
+    chatElement.style = "display: block; width: 100%; height: 100%;";
+    chatElement.appConfig = globalConfig;
+    chatElement.instanceId = assistantConfig.instanceId;
+    chatElement.additionalWorkflowProperties = assistantConfig.additionalWorkflowProperties;
+    chatElement.query = assistantConfig.query;
+
+    // Event listeners
+    chatElement.addEventListener("openDocument", (e) => console.log("openDocument", e));
+    chatElement.addEventListener("openPreview", (e) => console.log("openPreview", e));
+
+    document.getElementById("chat").appendChild(chatElement);
+</script>
+```
+
+This example demonstrates how to listen for the `openDocument` and `openPreview` events and log the event data to the console. You can replace the `console.log` statements with your own custom logic to perform actions based on these events.
 
 ## Use in React
 

@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, inject, input } from '@angular/core';
+import { Component, computed, ElementRef, inject, input, OnDestroy, OnInit, viewChild } from '@angular/core';
 
 import { ChatComponent } from '@sinequa/assistant/chat';
 
@@ -6,7 +6,7 @@ import { ChatComponent } from '@sinequa/assistant/chat';
   selector: 'sq-chat-wrapper',
   template: `
     @if(isReady()) {
-      <sq-chat-v3
+      <sq-chat-v3 #sqChat
         [appConfig]="appConfig()!"
         [instanceId]="instanceId()!"
         [query]="query()!"
@@ -18,24 +18,35 @@ import { ChatComponent } from '@sinequa/assistant/chat';
   standalone: true,
   imports: [ChatComponent],
 })
-export class ChatWrapperComponent {
+export class ChatWrapperComponent implements OnInit, OnDestroy {
   appConfig = input<any>();
-  instanceId = input<any>();
+  instanceId = input<string>();
   query = input<any>();
+  sqChat = viewChild.required('sqChat', {read: ChatComponent});
 
   isReady = computed(
     () => !!this.appConfig() && !!this.instanceId() && !!this.query()
   );
 
-  el = inject(ElementRef);
+  ngOnInit(): void {
+    document.addEventListener('newDiscussion', this.handler);
+  }
+
+  ngOnDestroy(): void {
+    document.removeEventListener('newDiscussion', this.handler);
+  }
+
+  private handler = () => {
+    this.sqChat()?.newChat();
+  };
 
   onOpenPreview = (event: any) =>
-    this.el.nativeElement.dispatchEvent(
+    document.dispatchEvent(
       new CustomEvent('openPreview', { detail: event })
     );
 
   onOpenDocument = (event: any) =>
-    this.el.nativeElement.dispatchEvent(
+    document.dispatchEvent(
       new CustomEvent('openDocument', { detail: event })
     );
 }

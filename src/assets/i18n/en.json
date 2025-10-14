@@ -1,4 +1,13 @@
 {
+  "newDiscussion": "New Discussion",
+  "loading": "Loading…",
+  "openSettings": "Open assistant settings",
+  "filters": "Filters",
+  "documentsInSources": "My Documents in Sources",
+  "refresh": "Refresh",
+  "deleteAll": "Delete All",
+  "uploadToSources": "Upload to Sources",
+  "uploaded": "Uploaded",
   "assistant": {
     "userPrompt": "Hi, my name is [[principal.fullName]].",
     "connectionErrorMessage": "Connection lost! Please check your network connection and try again.",
