@@ -1,6 +1,6 @@
 {
   "name": "assistant-element",
-  "version": "3.9.11",
+  "version": "3.10.0",
   "scripts": {
     "ng": "ng",
     "start": "npm run build && cd ./vite && npm run vite",
@@ -27,7 +27,7 @@
     "@jsverse/transloco": "^7.6.1",
     "@jsverse/transloco-messageformat": "^7.0.1",
     "@microsoft/signalr": "^7.0.12",
-    "@sinequa/assistant": "3.9.11",
+    "@sinequa/assistant": "3.10.0",
     "@sinequa/atomic": "^0.0.113",
     "chart.js": "^4.4.7",
     "date-fns": "^4.1.0",
