@@ -27,7 +27,7 @@
     "@jsverse/transloco": "^7.6.1",
     "@jsverse/transloco-messageformat": "^7.0.1",
     "@microsoft/signalr": "^7.0.12",
-    "@sinequa/assistant": "3.10.0",
+    "@sinequa/assistant": "3.10.2",
     "@sinequa/atomic": "^0.0.113",
     "chart.js": "^4.4.7",
     "date-fns": "^4.1.0",
