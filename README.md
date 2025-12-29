@@ -46,6 +46,9 @@ import { setGlobalConfig } from "./atomic.js";
 
 setGlobalConfig({
   app: "your-app-name",
+  backendUrl : "your-backend-url",
+	bearerToken: "JWT"
+        
 });
 ```
 
@@ -58,7 +61,9 @@ You should replace the placeholder values with your own:
 ```typescript
 const assistantConfig = {
   instanceId: "<your-instance-name>",          // Replace with the name of your Assistant instance
-  additionalWorkflowProperties: {},            // Optional workflow-specific properties
+  additionalWorkflowProperties: {             // Optional to set up values that are accessible within the workflow(s)
+    test: "you should see this"
+    },            
   query: { 
     name: "<your-query-web-service-name>"      // Replace with the name of your Query web service
   },
@@ -68,16 +73,7 @@ const assistantConfig = {
 
 ### Authentication
 
-Authentication is handled through the `SessionStorage` browser API, with the key `assistant-web-component-token`.
-The web component will automatically check for this token when it is initialized.
-
-#### Static token
-
-You can specify a Sinequa Access Token using:
-
-```typescript
-sessionStorage.setItem("assistant-web-component-token", "your-token");
-```
+Authentication is handled through the `bearerToken`.
 
 Then call the `initSinequaAssistant()` function to initialize the component with the token.
 

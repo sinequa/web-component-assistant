@@ -69,15 +69,9 @@
 
       setGlobalConfig({
         app: "<AppName>",
-        // autoOAuthProvider: "",
+        backendUrl : "https://server.demo.sinequa.com",
+		    bearerToken: "JWT"
       });
-
-      // storing token in sessionStorage simulating storing from higher level app
-      sessionStorage.setItem(
-        "assistant-web-component-token",
-        // !! insert token below
-        "<AuthToken>"
-      );
 
       const assistantConfig = {
         instanceId: "standalone-assistant",
@@ -85,11 +79,7 @@
         query: { name: "<QueryWebServiceName>" },
       };
 
-      logout();
-
-      await login().then(() => {
         initSinequaAssistant();
-      });
 
       async function initDocumentsUpload() {
         const app = await fetchApp();
@@ -105,13 +95,11 @@
       }
 
       async function initSinequaAssistant() {
-        // get token from session storage
-        const token = sessionStorage.getItem("assistant-web-component-token");
         // metadata for challenge request
-        const { app, backendUrl } = globalConfig;
+        const { app, backendUrl, bearerToken } = globalConfig;
         const headers = {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${bearerToken}`,
         };
         const body = {
           action: "get",
@@ -122,6 +110,7 @@
           // challenge request
           fetch(`${backendUrl}/api/v1/security.webtoken`, {
             method: "POST",
+            credentials: 'include',
             headers,
             body: JSON.stringify(body),
           })
