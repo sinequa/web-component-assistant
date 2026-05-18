@@ -187,29 +187,81 @@ npm run vite
 
 ## Translations
 
-We do **not** provide system to update translations dynamically, but we do provide Transloco scoped libraries support, which means you _can_ have translations for your web component, but at **build time** only.
+The web component uses [Transloco](https://jsverse.github.io/transloco/) for internationalization. Language support has two dimensions: which languages are **available** (configured at build time) and which language is **active** (can be switched at runtime).
 
-To update translations, you need to add your language to `availableLangs` and update `defaultLang` properties in `src/main.ts`:
+### Configuring available languages (build time)
+
+To add or change the supported languages, update `availableLangs` and `defaultLang` in `src/main.ts`:
 
 ```ts
-import ...
-
-createApplication({
-  providers: [
-    ...,
-
-    provideTransloco({
-      config: {
-        availableLangs: ['en', 'fr'],   // <-- There
-        defaultLang: 'en',              // <-- And there
-        ...
-      },
-    }),
-  ],
-})
-  .then((app) => {
-    ...
-  });
+provideTransloco({
+  config: {
+    availableLangs: ['en', 'fr', 'de'],   // languages your deployment supports
+    defaultLang: 'en',                    // fallback when no match is found
+    reRenderOnLangChange: true,
+    fallbackLang: 'en',
+  },
+}),
 ```
 
-Once updated, build the project again and your web component will point to the new default language. You will have to provide the translation files for your language in the `src/assets/i18n/` folder.
+Then provide the corresponding translation files in `src/assets/i18n/` (e.g. `fr.json`, `de.json`) and rebuild the project. The built assets will include all translation files for the declared languages.
+
+### Switching the active language at runtime
+
+The active language can be changed at any time after the web component has loaded, without a page reload. Two mechanisms are available.
+
+#### 1. Automatic detection from the page language
+
+When the web component initialises it reads `<html lang="...">` and activates the matching language automatically. This requires no extra code on the host page, standard CMS platforms (WordPress, Drupal, etc.) already set this attribute.
+
+```html
+<!-- WordPress / any CMS — the web component picks this up on load -->
+<html lang="fr-FR">
+```
+
+Full BCP 47 locale codes (`fr-FR`, `en-US`) are accepted; only the primary language subtag is used (`fr`, `en`).
+
+#### 2. Event-based switching
+
+To switch language after the page has loaded, dispatch a `sinequa-set-language` custom event on `document`:
+
+```javascript
+document.dispatchEvent(
+  new CustomEvent('sinequa-set-language', { detail: { lang: 'fr' } })
+);
+```
+
+The `lang` value can be a bare tag (`fr`) or a full BCP 47 code (`fr-FR`). Only languages declared in `availableLangs` at build time are accepted; unsupported values are silently ignored.
+
+#### Confirmation event
+
+Once the language switch has been applied, the web component dispatches a `sinequa-language-changed` event back on `document`. Listen for it to confirm the change or to react to it in the host page:
+
+```javascript
+document.addEventListener('sinequa-language-changed', (event) => {
+  console.log('Active language:', event.detail.lang); // e.g. 'fr'
+});
+```
+
+#### Full example — language picker in a host page
+
+```html
+<select onchange="setLanguage(this.value)">
+  <option value="en">English</option>
+  <option value="fr">Français</option>
+  <option value="de">Deutsch</option>
+</select>
+
+<script>
+  function setLanguage(lang) {
+    document.dispatchEvent(
+      new CustomEvent('sinequa-set-language', { detail: { lang } })
+    );
+  }
+
+  // Optional: react to the confirmation
+  document.addEventListener('sinequa-language-changed', (e) => {
+    console.log('Language switched to:', e.detail.lang);
+  });
+</script>
+```

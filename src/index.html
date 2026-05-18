@@ -26,14 +26,21 @@
     <!-- Main template  -->
     <div id="main-container">
       <div id="left-menu">
+        <div id="language-section" class="menu-section">
+          <select class="form-select form-select-sm" onchange="setLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </div>
         <div id="settings-section" class="menu-section">
           <button class="btn btn-primary p-2 text-start" onclick="toggleSettings()">
-            <i class="fas fa-cog"></i> Settings
+            <i class="fas fa-cog"></i> <span id="label-settings">Settings</span>
           </button>
         </div>
         <div id="new-conversation-section" class="menu-section">
           <button class="btn btn-primary p-2 text-start" onclick="startNewDiscussion()">
-            <i class="fas fa-plus"></i> New discussion
+            <i class="fas fa-plus"></i> <span id="label-new-discussion">New discussion</span>
           </button>
         </div>
         <div id="document-overview-section" class="menu-section"></div>
@@ -55,6 +62,31 @@
       crossorigin="anonymous">
     </script>
     <script type="module">
+      // --- Host-page label i18n region start--- //
+      // Loads translation keys from the same assets used by the web component
+      // and updates the labels that live outside the Angular shadow (buttons, etc.).
+      const SUPPORTED_LANGS = ['en', 'fr', 'de'];
+
+      async function loadAndApplyLabels(rawLang) {
+        const lang = rawLang.split('-')[0].toLowerCase();
+        const effectiveLang = SUPPORTED_LANGS.includes(lang) ? lang : 'en';
+        try {
+          const response = await fetch(`./assets/i18n/${effectiveLang}.json`);
+          const t = await response.json();
+          if (t.settings) document.getElementById('label-settings').textContent = t.settings;
+          if (t.newDiscussion) document.getElementById('label-new-discussion').textContent = t.newDiscussion;
+        } catch {
+          // silently keep default labels if the file cannot be loaded
+        }
+      }
+
+      // Apply immediately from the page's lang attribute (document.documentElement.lang, set by the CMS)
+      loadAndApplyLabels(document.documentElement.lang || 'en');
+
+      // Re-apply whenever the web component confirms a language switch
+      document.addEventListener('sinequa-language-changed', (e) => loadAndApplyLabels(e.detail.lang));
+      // --- Host-page label i18n region end--- //
+
       import {
         setGlobalConfig,
         getToken,
@@ -153,6 +185,11 @@
               // New Discussion Button
               window.startNewDiscussion = function () {
                 document.dispatchEvent(new CustomEvent("newDiscussion"));
+              }
+
+              // Language switcher
+              window.setLanguage = (lang) => {
+                document.dispatchEvent(new CustomEvent("sinequa-set-language", { detail: { lang } }));
               }
 
               // Saved Chats Wrapper
