@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { createCustomElement } from '@angular/elements';
 import { createApplication } from '@angular/platform-browser';
 import { APP_INITIALIZER } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
 import Flow from '@flowjs/flow.js';
 import { FlowInjectionToken } from '@flowjs/ngx-flow';
 import { provideTransloco } from '@jsverse/transloco';
@@ -45,7 +46,7 @@ createApplication({
         availableLangs: ['en', 'fr', 'de'],
         defaultLang: 'en',
         // Remove this option if your application doesn't support changing language in runtime.
-        reRenderOnLangChange: false,
+        reRenderOnLangChange: true,
         prodMode: true,
         fallbackLang: 'en',
         // missingHandler: {
@@ -115,5 +116,34 @@ createApplication({
     });
     customElements.define('sq-document-upload-wrapper', documentUploadWrapper);
 
+    // --- Runtime language switching ---
+    const translocoService = app.injector.get(TranslocoService);
+
+    /** Normalise BCP 47 codes to a bare language tag (fr-FR → fr). */
+    function normalizeLang(raw: string): string {
+      return raw.split('-')[0].toLowerCase();
+    }
+
+    /** Switch language if supported, then confirm to the host. */
+    function applyLang(raw: string): void {
+      const lang = normalizeLang(raw);
+      const available = translocoService.getAvailableLangs();
+      const isAvailable = available.some((l) => (typeof l === 'string' ? l : l.id) === lang);
+      if (isAvailable) {
+        translocoService.setActiveLang(lang);
+        document.dispatchEvent(new CustomEvent('sinequa-language-changed', { detail: { lang } }));
+      }
+    }
+
+    // Auto-detect from <html lang="..."> at bootstrap (WordPress / standard CMS)
+    if (document.documentElement.lang) {
+      applyLang(document.documentElement.lang);
+    }
+
+    // Listen for runtime language change events dispatched by the host page
+    document.addEventListener('sinequa-set-language', (event: Event) => {
+      const lang = (event as CustomEvent<{ lang: string }>).detail?.lang;
+      if (lang) applyLang(lang);
+    });
   })
   .catch((err) => console.error(err));
