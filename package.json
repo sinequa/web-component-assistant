@@ -1,6 +1,6 @@
 {
   "name": "assistant-element",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "scripts": {
     "ng": "ng",
     "start": "npm run build && cd ./vite && npm run vite",
@@ -12,27 +12,27 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^20.3.16",
+    "@angular/animations": "^20.3.28",
     "@angular/cdk": "^20.2.14",
-    "@angular/common": "^20.3.16",
-    "@angular/compiler": "^20.3.16",
-    "@angular/core": "^20.3.16",
-    "@angular/elements": "^20.3.16",
-    "@angular/forms": "^20.3.16",
-    "@angular/platform-browser": "^20.3.16",
-    "@angular/platform-browser-dynamic": "^20.3.16",
-    "@angular/router": "^20.3.16",
+    "@angular/common": "^20.3.28",
+    "@angular/compiler": "^20.3.28",
+    "@angular/core": "^20.3.28",
+    "@angular/elements": "^20.3.28",
+    "@angular/forms": "^20.3.28",
+    "@angular/platform-browser": "^20.3.28",
+    "@angular/platform-browser-dynamic": "^20.3.28",
+    "@angular/router": "^20.3.28",
     "@flowjs/flow.js": "^2.14.1",
     "@flowjs/ngx-flow": "^0.6.0",
     "@jsverse/transloco": "^7.6.1",
     "@jsverse/transloco-messageformat": "^7.0.1",
     "@microsoft/signalr": "^7.0.12",
-    "@sinequa/assistant": "4.1.0",
+    "@sinequa/assistant": "4.2.0",
     "@sinequa/atomic": "^0.0.122",
     "chart.js": "^4.4.7",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.2.0",
     "prismjs": "^1.30.0",
     "prismjs-components-importer": "^0.2.0",
     "rxjs": "~7.8.0",
@@ -43,13 +43,26 @@
   "devDependencies": {
     "@angular/build": "^20.3.14",
     "@angular/cli": "^20.3.14",
-    "@angular/compiler-cli": "^20.3.16",
+    "@angular/compiler-cli": "^20.3.28",
     "@jsverse/transloco-scoped-libs": "^7.0.1",
     "@types/flowjs__flow.js": "^2.13.3",
     "typescript": "^5.9.3",
     "zod": "^3.24.1"
   },
   "overrides": {
-    "vite": "^6.2.0"
+    "vite": "^6.4.3",
+    "ws": "^7.5.11",
+    "@babel/core": "7.29.7",
+    "piscina": "5.2.0",
+    "qs": "^6.15.3",
+    "tar": "^7.5.17",
+    "hono": "^4.12.27",
+    "js-yaml": "^4.2.0",
+    "glob": {
+      "minimatch": "^10.2.5"
+    },
+    "@modelcontextprotocol/sdk": {
+      "@hono/node-server": "^2.0.5"
+    }
   }
 }
